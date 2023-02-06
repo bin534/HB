@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  
+ <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>AI聊天系统</title>
+	<script src="js/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="js/wc-3.0.6.min.js"></script>
+  </head>
+  <body>		
+    <div id="main"></div>
+    <div id="footer">
+      <input id="sendText" type="text" placeholder="请输入内容"/>
+      <input id="sendButton" type="button" value="发送"/>
+    </div>
+    <script>
+     
+      $("#sendButton").click(function(){
+        var str = $("#sendText").val();
+        if(str == ""){
+          return;
+        }
+        addMessage(0, str);
+        $("#sendText").val("");
+        $.ajax({
+          url: "http://api.qingyunke.com/api.php?key=free&appid=0&msg=" + str,
+          async: true,
+          type: "get",
+          dataType: "json",
+          success: function(result){
+            addMessage(1, result.content);
+          },
+          error: function(err){
+            //alert(JSON.stringify(err));
+          }
+        });
+      });  
+    
+      function addMessage(type, message){
+        var reg = new RegExp("{br}","g");
+        var message = message.replace(reg, "</br>");
+        if(type == 1){
+          $("#main").append("<div class='item'><div class='item-left'>" + message + "</div></div>");
+        } else{
+          $("#main").append("<div class='item'><div class='item-right'>" + message + "</div></div>");
+        }
+        $('#main').scrollTop($('#main')[0].scrollHeight);
+      }   
+      $("#main").css("max-height", $(window).height()-50);     
+    </script> 
+  </body>
+</html>
