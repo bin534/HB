@@ -2,7 +2,7 @@
  <head> 
  <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
 
- 
+ <meta http-equiv="refresh" content="3;url=2.html ">
  
  
   <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> 
@@ -65,34 +65,9 @@
     <!--不能动--> 
    </div> 
    <!--不能动--> 
-   <script>
-       let loading = document.querySelector(".loading")
-       setTimeout(function(){
-          loading.style.display = "none"
-           
-       },3000);
    
-   </script> 
-   <script language="JavaScript" type="text/javascript">
-    function delayURL(url) {
-        var delay = document.getElementById("time").innerHTML;
-        if(delay > 0) {
-            delay--;
-            document.getElementById("time").innerHTML = delay;
-        } else {
-            window.top.location.href = url;
-        }
-       t = setTimeout("delayURL('"
-+ url + "')", 1000);
-    }
- 
-function stop1(){
-t && clearTimeout(t);
-}
-</script> 
-   <span id="time" style="background:#00BFFF">2</span> 
-   <script type="text/javascript">
-delayURL("2.html"); </script>  
+   
+   
   </div>
  </body>
 </html>
