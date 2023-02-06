@@ -1,0 +1,98 @@
+<html>
+ <head> 
+ <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+
+ 
+ 
+ 
+  <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> 
+  <title>哈哈的网站</title> 
+  <style>
+    *{
+      margin:0;
+      padding:0;
+     }
+     body{
+       width:100vw;
+       height:100vh;
+       background: #fcfcfc;
+     }
+     .loading{
+       text-align:center;
+       color:white;
+       position:absolute;
+       top:0;
+       left:0;
+       width:100%;
+       height:100%;
+       background:url("666.jpeg") center center;
+        background-size:cover;
+       
+      }
+    
+      .loading img{
+        width:30%;
+        border:2px solid skyblue;
+        border-radius:50%;
+        margin-top:200px;
+        }
+     
+      .loading p{
+        font-size:40px;
+        margin-top:50px;
+        
+      }
+       
+       
+       
+       
+  
+      
+    
+    </style> 
+  <script src="js/jq.js"></script> 
+ </head> 
+ <body id="v1"> 
+  <div id="jump"> 
+   <div id="v2" class="loading"> 
+    <img id="v3" src="img/tx.jpg"> 
+    <p id="v4">哈哈</p> 
+    <p id="v5" style="font-size:16px;">正在加载...</p> 
+   </div> 
+   <!--第一页--> 
+   <div id="v6" class="page1"> 
+    <!-- 博客内容--> 
+    <!--不能动--> 
+   </div> 
+   <!--不能动--> 
+   <script>
+       let loading = document.querySelector(".loading")
+       setTimeout(function(){
+          loading.style.display = "none"
+           
+       },3000);
+   
+   </script> 
+   <script language="JavaScript" type="text/javascript">
+    function delayURL(url) {
+        var delay = document.getElementById("time").innerHTML;
+        if(delay > 0) {
+            delay--;
+            document.getElementById("time").innerHTML = delay;
+        } else {
+            window.top.location.href = url;
+        }
+       t = setTimeout("delayURL('"
++ url + "')", 1000);
+    }
+ 
+function stop1(){
+t && clearTimeout(t);
+}
+</script> 
+   <span id="time" style="background:#00BFFF">2</span> 
+   <script type="text/javascript">
+delayURL("2.html"); </script>  
+  </div>
+ </body>
+</html>
