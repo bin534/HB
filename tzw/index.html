@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+		<meta charset="utf-8">
+		<title>图片隐写</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<style>
+
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				background: #d4ffe8;
+			}
+			.title{
+				color: red;
+				text-align: center;
+				font-size: 6.1333vw;
+			}
+			
+			canvas {
+				display: block;
+				margin: 0 auto;
+				margin-top: 3vw;
+				/* 增高对比度 保持鲜艳色彩 */
+				/* filter: contrast(150%); */
+				/* border: 2px solid red; */
+				box-shadow: 0px 0px 5px black;
+				/* background: #ccc; */
+			}
+
+			input {
+				font-size: 30px;
+			}
+			.box{
+				overflow: hidden;
+				width: 84.0000vw;
+				height: 149.8667vw;
+				box-shadow: 2px 2px 5vw rgba(0, 0, 0, .3);
+				border-radius: 10vw;
+				margin: 0 auto;
+				margin-top: 2vw;
+			}
+			.logo{
+				display: block;
+				width: 20.0000vw;
+				border-radius: 50%;
+				margin: 0 auto;
+				margin-top: 33.2000vw;
+			}
+			
+			.text{
+				border: none;
+				display: block;
+				margin: 0 auto;
+				margin-top: 4vw;
+				font-size: 4vw;
+				width: 40vw;
+				padding: 1vw;
+				text-align: center;
+				box-shadow: 2vw 2vw 5vw rgba(0, 0, 0, .2);
+			}
+			.file{
+				font-size: 10vw;
+				background-color: red;
+				
+			}
+			.lab{
+				width: 37.0667vw;
+				height: 12.4000vw;
+				background: #00ccad;
+				border-radius: 7vw;
+				text-align: center;
+				line-height: 12.400vw;
+				font-size: 6.3vw;
+				color: white;
+				margin: 0 auto;
+				box-shadow: 2vw 2vw 5vw rgba(0, 0, 0, .2);
+			}
+			.toImg{
+				display: block;
+				width: 51.04vw !important;
+				height: 51.04vw !important;
+				margin: 0 auto;
+				margin-top: 5vw;
+				border:2px solid rgba(255, 0, 0, 0.3);
+			}
+		</style>
+	</head>
+	<body>
+		<h1 class="title">图片隐写</h1>
+		<div class="box">
+			<img src="./logo.png" alt="" class="logo">
+			<input type="text" placeholder="这里输入文字" class="text">
+			<input type="file" class="file" id="file" style="display: none;"><br/>
+			<div class="lab"><label for="file">选择图片</label></div>
+			<img src="" class="toImg">
+			<canvas id="canvas" style="display: none;"></canvas>
+		</div>
+		
+		<script>
+			let canvas = document.querySelector('canvas')
+			let ctx = canvas.getContext('2d')
+			let w = 1200
+			let spacing = w / 100
+			let len = w / spacing
+
+			let rgbas = []
+			
+			//分割系数
+			let cut = 100
+			setCanvas()
+
+			function setCanvas(){
+				canvas.width = w
+				canvas.height = w
+			}
+			
+			let file = document.querySelector('.file')
+			let imgs,imgBase64
+			file.addEventListener('change',function(){
+				imgs = this.files[0]
+				let reader = new FileReader()
+				reader.readAsDataURL(imgs)
+				reader.onloadend = function(e){
+					imgBase64 = e.target.result
+					draws(imgBase64)
+				}
+			})
+			
+			
+			function draws(src){
+				//初始化 
+				init()
+				let img = new Image()
+				img.src = src
+				img.onload = function(){
+					ctx.drawImage(img, 0, 0, cut, cut)
+					let data = ctx.getImageData(0, 0, cut, cut).data
+					let j = 0
+					for (let i = 0; i < data.length; i += 4) {
+						let temp = []
+						for (let j = 0; j < 4; j++) {
+							temp.push(data[i + j])
+						}
+						rgbas.push([temp])
+					}
+				
+					drawsImg()
+				}
+				 
+			}
+			
+			function drawsImg(){
+				ctx.fillStyle = '#ccc'
+				ctx.clearRect(0, 0, w, w)
+				ctx.fillRect(0, 0, w, w)
+				let x = 0
+				let y = 0
+				let text = document.querySelector('.text').value
+				ctx.font = spacing + 'px Arial'
+				let multiple = w / cut
+				rgbas.forEach((v, i) => {
+					let tem = 50
+					let color1 = `rgb(${v[0][0]+10},${v[0][1]+10},${v[0][2]+10}`
+					let color2 = `rgb(${v[0][0]+tem},${v[0][1]+tem},${v[0][2]+tem}`
+					ctx.fillStyle = color1
+					ctx.fillRect(x * multiple, y * multiple,12,12)
+					ctx.fillStyle = color2
+					let ttx = text[Math.floor(Math.random() * text.length)];
+					ctx.fillText(ttx, x * multiple, (y+0) * multiple)
+					x++
+					if (x >= cut) {
+						x = 0
+						y++
+					}
+									
+				})
+				toImg()
+			}
+			
+			//渲染到img标签
+			function toImg(){
+				let img = document.querySelector('.toImg')
+				img.src = canvas.toDataURL('image/png')
+			}
+			
+			
+			function init(){
+				rgbas = []
+			}
+			
+			
+		</script>
+	</body>
+</html>
